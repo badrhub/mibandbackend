@@ -5,17 +5,20 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 public class Client {
 	
-	@Id @GeneratedValue(strategy = GenerationType.AUTO)
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@NotNull @Column(unique=true)
@@ -32,8 +35,8 @@ public class Client {
 	
 	private String mail;
 	
-	
-	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true )
+	@JsonIgnore
+	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true , fetch = FetchType.LAZY )
 	private List<Heartbeat> heartbeats = new ArrayList<>();
 	
 	public void addHeartbeat(Heartbeat heartbeat) {
@@ -109,7 +112,7 @@ public class Client {
 	
 	@Override
 	public int hashCode() {
-		return 31 + mac.hashCode();
+		return 31 + mac.hashCode() + id.hashCode();
 	}
 	
 	@Override
@@ -119,9 +122,8 @@ public class Client {
 	    if (!(o instanceof Client))
 	        return false;
 	    Client other = (Client)o;
-	    boolean clientCodeEquals = (this.mac == null && other.mac== null)
-	      || (this.mac != null && this.mac.equals(other.mac)) ;
-	    return this.mac.equals(other.mac) && clientCodeEquals;
+	    boolean clientCodeEquals = (this.mac == null && other.mac== null) || (this.mac != null && this.mac.equals(other.mac)) ;
+	    return this.id.equals(other.id) && clientCodeEquals ;
 	}
 
 	public List<Heartbeat> getHeartbeats() {

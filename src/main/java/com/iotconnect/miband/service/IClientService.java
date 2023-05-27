@@ -7,9 +7,9 @@ import com.iotconnect.miband.models.Heartbeat;
 
 public interface IClientService {
 
-	Client update(Long id, Client c);
+	String update(Long id, Client c);
 
-	Client add(Client c);
+	String add(Client c);
 
 	Client delete(Long id);
 
@@ -19,7 +19,7 @@ public interface IClientService {
 
 	List<Client> getAll();
 
-	List<Heartbeat> getHeartbeatsByClient(Long id);
+	List<Heartbeat> getHeartbeatsByClient(Long id ,Integer pageNo, Integer pageSize, String sortBy);
 
 	Client getClientById(Long id);
 
