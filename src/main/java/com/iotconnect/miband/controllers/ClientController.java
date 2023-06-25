@@ -57,8 +57,8 @@ public class ClientController {
 	// $$$$$$$$$$$$$$$$$$$$$$$$$&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
 	@GetMapping("/getHeartbeatsByClient/{id}")
-	public List<Heartbeat> getHeartbeatsByClient(@PathVariable Long id , @RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "2") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy) {
+	public List<Heartbeat> getHeartbeatsByClient(@PathVariable Long id , @RequestParam(defaultValue = "0") Integer pageNo,
+			@RequestParam(defaultValue = "20") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy) {
 		return serviceClient.getHeartbeatsByClient(id , pageNo, pageSize, sortBy);
 	}
 

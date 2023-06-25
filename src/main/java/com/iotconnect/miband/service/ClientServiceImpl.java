@@ -30,8 +30,8 @@ public class ClientServiceImpl implements IClientService{
 		String message = null;
 		if(c.getMac() != null) {
 			Client newClient = getByMac(c.getMac());
-			Client oldClient =  clientRepository.findById(id).get();
-		    if(oldClient.equals(newClient)) {
+			Client oldClient =  clientRepository.findById(id).orElse(null);;
+		    if(oldClient != null && oldClient.equals(newClient)) {
 		    	oldClient.setNom(c.getNom());
 		    	oldClient.setPrenom(c.getPrenom());	
 		    	oldClient.setAdresse(c.getAdresse());
@@ -68,7 +68,7 @@ public class ClientServiceImpl implements IClientService{
 
 	@Override
 	public Client delete(Long id) {
-		Client old = clientRepository.findById(id).get();
+		Client old = clientRepository.findById(id).orElse(null);
 	    clientRepository.delete(old);
 	    return old;
 	}
@@ -91,7 +91,7 @@ public class ClientServiceImpl implements IClientService{
 	@Override
 	public List<Heartbeat> getHeartbeatsByClient(Long id , Integer pageNo, Integer pageSize, String sortBy) {
 		if(id != null) {
-			Client c = clientRepository.findById(id).get();
+			Client c = clientRepository.findById(id).orElse(null);
 			if(c != null) {
 				 Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
 				return heartbeatRepository.findByClient(c, paging);
@@ -102,7 +102,7 @@ public class ClientServiceImpl implements IClientService{
 
 	@Override
 	public Client getClientById(Long id) {
-		return clientRepository.findById(id).get();
+		return clientRepository.findById(id).orElse(null);
 	}
 
 }
